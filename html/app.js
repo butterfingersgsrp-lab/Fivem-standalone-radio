@@ -46,6 +46,9 @@ window.addEventListener('message', (event) => {
   if (data.type === 'stop') {
     stopStream();
   }
+  if (data.type === 'close') {
+    closeUI();
+  }
 });
 
 closeButton.addEventListener('click', closeUI);
