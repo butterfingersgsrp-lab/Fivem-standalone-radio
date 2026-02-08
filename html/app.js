@@ -7,6 +7,17 @@ const urlInput = document.getElementById('url');
 const stationName = document.getElementById('station-name');
 const audio = document.getElementById('audio');
 
+const postNui = (event, payload = {}) => {
+  if (typeof GetParentResourceName !== 'function') {
+    return;
+  }
+
+  fetch(`https://${GetParentResourceName()}/${event}`, {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+};
+
 const openUI = () => {
   overlay.classList.add('active');
   stationInput.focus();
@@ -14,10 +25,7 @@ const openUI = () => {
 
 const closeUI = () => {
   overlay.classList.remove('active');
-  fetch(`https://${GetParentResourceName()}/close`, {
-    method: 'POST',
-    body: JSON.stringify({})
-  });
+  postNui('close');
 };
 
 const playStream = (name, url) => {
@@ -53,20 +61,14 @@ window.addEventListener('message', (event) => {
 
 closeButton.addEventListener('click', closeUI);
 stopButton.addEventListener('click', () => {
-  fetch(`https://${GetParentResourceName()}/stopStation`, {
-    method: 'POST',
-    body: JSON.stringify({})
-  });
+  postNui('stopStation');
 });
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
-  fetch(`https://${GetParentResourceName()}/setStation`, {
-    method: 'POST',
-    body: JSON.stringify({
-      name: stationInput.value,
-      url: urlInput.value
-    })
+  postNui('setStation', {
+    name: stationInput.value,
+    url: urlInput.value
   });
 });
 
