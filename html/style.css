@@ -27,9 +27,7 @@ body {
   display: none;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at top, rgba(255, 122, 47, 0.15), transparent 55%),
-    rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
+  background: transparent;
 }
 
 .overlay.active {

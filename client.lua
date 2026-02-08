@@ -5,8 +5,25 @@ local function setNuiFocus(state)
     isOpen = state
 end
 
+local function playerInVehicle()
+    local ped = PlayerPedId()
+    return IsPedInAnyVehicle(ped, false)
+end
+
+local function notify(message)
+    BeginTextCommandThefeedPost('STRING')
+    AddTextComponentSubstringPlayerName(message)
+    EndTextCommandThefeedPostTicker(false, false)
+end
+
 RegisterNetEvent('fivem-radio:open', function()
     if isOpen then
+        return
+    end
+
+    if not playerInVehicle() then
+        notify('You can only use the radio while in a vehicle.')
+        setNuiFocus(false)
         return
     end
 
@@ -31,9 +48,7 @@ RegisterNetEvent('fivem-radio:stop', function()
 end)
 
 RegisterNetEvent('fivem-radio:notify', function(message)
-    BeginTextCommandThefeedPost('STRING')
-    AddTextComponentSubstringPlayerName(message)
-    EndTextCommandThefeedPostTicker(false, false)
+    notify(message)
 end)
 
 RegisterNUICallback('close', function(_, cb)
@@ -59,3 +74,16 @@ RegisterCommand('radioshortcut', function()
 end, false)
 
 RegisterKeyMapping('radioshortcut', 'Open Radio UI', 'keyboard', Config.ToggleKey)
+
+CreateThread(function()
+    while true do
+        if isOpen and not playerInVehicle() then
+            setNuiFocus(false)
+            SendNUIMessage({
+                type = 'close'
+            })
+            notify('Radio closed: enter a vehicle to use it.')
+        end
+        Wait(500)
+    end
+end)
