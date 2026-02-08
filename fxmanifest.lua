@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 name 'Fivem-standalone-radio'
-author 'OpenAI'
+author 'Butterfingers'
 description 'Standalone/ESX radio with word filtering'
 version '1.0.0'
 
