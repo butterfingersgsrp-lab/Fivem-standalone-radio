@@ -34,6 +34,7 @@ RegisterNetEvent('fivem-radio:open', function()
 end)
 
 RegisterNetEvent('fivem-radio:play', function(payload)
+    payload = payload or {}
     SendNUIMessage({
         type = 'play',
         name = payload.name,
